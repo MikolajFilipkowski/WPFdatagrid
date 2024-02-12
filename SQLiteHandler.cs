@@ -10,32 +10,35 @@ using System.Data;
 using System.Data.Common;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using System.Collections.ObjectModel;
 
 namespace WPFdatagrid.SQLiteHandler
 {
-    public struct User
+    public class MyUser
     {
-        public User(int id, string name, int age)
+        public MyUser(int id, string name, int age)
         {
             Id = id;
             Name = name;
             Age = age;
         }
-        public int Id;
-        public string Name;
-        public int Age;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
 
-        public override readonly string ToString() => $"User {Id}: ({Name}, {Age})";
+        public override string ToString() => $"User {Id}: ({Name}, {Age})";
     }
 
     public class SQLHandler
     {
         public SQLiteConnection sqlite_conn;
+        public List<MyUser> databaseRepresentation;
 
         public SQLHandler() 
         {
             sqlite_conn = new SQLiteConnection("Data Source=database.db;Version=3;");
             CreateConnection();
+            databaseRepresentation = ReadData();
         }
 
         public void CreateConnection()
@@ -95,6 +98,8 @@ namespace WPFdatagrid.SQLiteHandler
             {
                 Trace.TraceError(ex.Message);
             }
+
+            databaseRepresentation = ReadData();
         }
 
         public void InsertData(string name, int age)
@@ -113,6 +118,39 @@ namespace WPFdatagrid.SQLiteHandler
             {
                 Trace.TraceError(ex.Message);
             }
+
+            databaseRepresentation = ReadData();
+        }
+        
+        public void InsertData(List<MyUser> users)
+        {
+            if (users.Count == 0) return;
+
+            SQLiteCommand cmd;
+            string command_query = "INSERT INTO users (id, name, age) VALUES ";
+
+            try
+            {
+                
+                cmd = sqlite_conn.CreateCommand();
+
+                for (int i = 0; i < users.Count; i++)
+                {
+                    command_query += $"(@id{i}, @name{i}, @age{i}),";
+                    cmd.Parameters.AddWithValue($"@id{i}", users[i].Id);
+                    cmd.Parameters.AddWithValue($"@name{i}", users[i].Name);
+                    cmd.Parameters.AddWithValue($"@age{i}", users[i].Age);
+                }
+                command_query = command_query.Remove(command_query.Length - 1);
+                cmd.CommandText = command_query;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError(ex.Message);
+            }
+
+            databaseRepresentation = ReadData();
         }
 
         public void UpdateData(int id, string name)
@@ -154,6 +192,8 @@ namespace WPFdatagrid.SQLiteHandler
             {
                 Trace.TraceError(ex.Message);
             }
+
+            databaseRepresentation = ReadData();
         }
 
         public void DeleteData(int id)
@@ -171,6 +211,8 @@ namespace WPFdatagrid.SQLiteHandler
             {
                 Trace.TraceError(ex.Message);
             }
+
+            databaseRepresentation = ReadData();
         }
 
         public void TruncateData()
@@ -187,13 +229,15 @@ namespace WPFdatagrid.SQLiteHandler
             {
                 Trace.TraceError(ex.Message);
             }
+
+            databaseRepresentation = ReadData();
         }
 
-        public List<User> ReadData()
+        public List<MyUser> ReadData()
         {
             SQLiteDataReader sqliteDataReader;
             SQLiteCommand cmd;
-            List<User> users = new List<User>();
+            List<MyUser> users = new List<MyUser>();
 
             string command_query = "SELECT * FROM users";
             try
@@ -203,7 +247,7 @@ namespace WPFdatagrid.SQLiteHandler
                 sqliteDataReader = cmd.ExecuteReader();
                 while ( sqliteDataReader.Read()) 
                 {
-                    User user = new((int)(Int64)sqliteDataReader["id"], (string)sqliteDataReader["name"], (int)(Int64)sqliteDataReader["age"]);
+                    MyUser user = new MyUser((int)(Int64)sqliteDataReader["id"], (string)sqliteDataReader["name"], (int)(Int64)sqliteDataReader["age"]);
                     users.Add(user);
                     Trace.WriteLine(user);
                 }
@@ -216,11 +260,11 @@ namespace WPFdatagrid.SQLiteHandler
             return users;
         }
 
-        public User SelectData(int id)
+        public MyUser SelectData(int id)
         {
             SQLiteDataReader sqliteDataReader;
             SQLiteCommand cmd;
-            User user;
+            MyUser user;
 
             string command_query = "SELECT * FROM users WHERE id=@id";
             try

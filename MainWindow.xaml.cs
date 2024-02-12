@@ -65,5 +65,14 @@ namespace WPFdatagrid
                 e.CancelCommand();
             }
         }
+
+        private void openDatagrid(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.Windows.OfType<MyDatagrid>().FirstOrDefault() == null)
+            {
+                MyDatagrid myDatagrid = new MyDatagrid(sqlHandler);
+                myDatagrid.Show();
+            }
+        }
     }
 }
