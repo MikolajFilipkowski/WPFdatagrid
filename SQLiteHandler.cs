@@ -173,6 +173,22 @@ namespace WPFdatagrid.SQLiteHandler
             }
         }
 
+        public void TruncateData()
+        {
+            SQLiteCommand cmd;
+            string command_query = "DELETE FROM users";
+            try
+            {
+                cmd = sqlite_conn.CreateCommand();
+                cmd.CommandText = command_query;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError(ex.Message);
+            }
+        }
+
         public List<User> ReadData()
         {
             SQLiteDataReader sqliteDataReader;
