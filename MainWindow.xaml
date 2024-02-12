@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="800">
     <StackPanel>
-        
+        <Button 
+            Content="Klik"
+            Width="100"
+            Click="Button_Click"
+            />
     </StackPanel>
 </Window>
