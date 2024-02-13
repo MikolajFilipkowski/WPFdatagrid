@@ -37,12 +37,25 @@ namespace WPFdatagrid
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (reczneId.IsChecked == true) 
-                sqlHandler.InsertData(Int32.Parse(idMoje.Text), imie.Text, Int32.Parse(wiek.Text));
-            else 
-                sqlHandler.InsertData(imie.Text, Int32.Parse(wiek.Text));
-            
-            sqlHandler.ReadData();
+            if (wiek.Text.Length == 0) return;
+            if (imie.Text.Length == 0) return;
+
+            try
+            {
+                if (reczneId.IsChecked == true)
+                {
+                    if (idMoje.Text.Length == 0) return;
+
+                    sqlHandler.InsertData(Int32.Parse(idMoje.Text), imie.Text, Int32.Parse(wiek.Text));
+                }
+                else
+                    sqlHandler.InsertData(imie.Text, Int32.Parse(wiek.Text));
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError(ex.Message);
+            }
+
         }
 
         private void onlyNumbers (object sender, TextCompositionEventArgs e)

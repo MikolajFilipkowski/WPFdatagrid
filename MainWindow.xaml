@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFdatagrid"
         mc:Ignorable="d"
-        Title="MainWindow" Height="640" Width="400" Background="#292929" ResizeMode="CanMinimize">
+        Title="Dodaj postać" Height="640" Width="400" Background="#292929" ResizeMode="CanMinimize">
     <StackPanel>
         <StackPanel Height="550">
             <TextBlock

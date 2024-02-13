@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFdatagrid"
         mc:Ignorable="d"
-        Title="MyDatagrid" Height="450" Width="400"
-        Loaded="WindowLoaded">
+        Title="Dane" Height="450" Width="400"
+        Loaded="WindowLoaded" ResizeMode="CanMinimize">
     <Window.Resources>
         <Color x:Key="WindowColor">Black</Color>
         <Color x:Key="ContentAreaColorLight">#444444</Color>
@@ -785,6 +785,7 @@
             FontSize="24"
             FontWeight="SemiBold"
             Foreground="White"
+            Margin="0 5"
             />
         <DataGrid 
             x:Name="myData" 
@@ -813,17 +814,147 @@
         </DataGrid>
         <Grid
             Margin="0 30"
+            HorizontalAlignment="Center"
             >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition  Width="auto"/>
+                <ColumnDefinition  Width="auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Button Content="Zapisz" Grid.Column="0" Grid.Row="0" Click="Save_Click"/>
-            <Button Content="Costam2" Grid.Column="1" Grid.Row="0"/>
+            <Button 
+                Content="Zapisz"
+                Width="100"
+                Height="30"
+                FontSize="15"
+                FontWeight="SemiBold"
+                Background="#5b5fc7"
+                Foreground="White"
+                BorderThickness="0"
+                FontFamily="Segoe UI"
+                Grid.Column="0"
+                Grid.Row="0"
+                Click="Save_Click"
+                Margin="12 0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#4f52b2" TargetName="Border" />
+                                            <Setter Property="Width" Value="98" TargetName="Border" />
+                                            <Setter Property="Height" Value="29" TargetName="Border" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#383a7e" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="2"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button 
+                Content="Odśwież"
+                Width="100"
+                Height="30"
+                FontSize="15"
+                FontWeight="SemiBold"
+                Background="#5b5fc7"
+                Foreground="White"
+                BorderThickness="0"
+                FontFamily="Segoe UI"
+                Grid.Column="1"
+                Grid.Row="0"
+                Click="Refresh_Click"
+                Margin="0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#4f52b2" TargetName="Border" />
+                                            <Setter Property="Width" Value="98" TargetName="Border" />
+                                            <Setter Property="Height" Value="29" TargetName="Border" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#383a7e" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="2"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button 
+                Content="Wyczyść"
+                Width="100"
+                Height="30"
+                FontSize="15"
+                FontWeight="SemiBold"
+                Background="#5b5fc7"
+                Foreground="White"
+                BorderThickness="0"
+                FontFamily="Segoe UI"
+                Grid.Column="2"
+                Grid.Row="0"
+                Click="Erase_Click"
+                Margin="12 0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#4f52b2" TargetName="Border" />
+                                            <Setter Property="Width" Value="98" TargetName="Border" />
+                                            <Setter Property="Height" Value="29" TargetName="Border" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#383a7e" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="2"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
         </Grid>
     </StackPanel>
 </Window>

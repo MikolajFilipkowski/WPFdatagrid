@@ -47,12 +47,11 @@ namespace WPFdatagrid
                     var bindingPath = ((Binding)column.Binding).Path.Path;
                     if (bindingPath == "Id")
                     {
-                       
                         int rowIndex = e.Row.GetIndex();
                         var el = (TextBox)e.EditingElement;
-                        // rowIndex has the row index
-                        // bindingPath has the column's binding
-                        // el.Text has the new, user-entered value
+
+                        if (el.Text.Length == 0) return;
+                        if (!int.TryParse(el.Text, out _)) return;
 
                         try
                         {
@@ -60,7 +59,7 @@ namespace WPFdatagrid
                             {
                                 if (user.Id == Int32.Parse(el.Text))
                                 {
-                                    el.Text = users[rowIndex].Id.ToString();
+                                    ((DataGrid)sender).CancelEdit(DataGridEditingUnit.Cell);
                                     break;
                                 }
                             }
@@ -73,6 +72,24 @@ namespace WPFdatagrid
                         {
                             Trace.WriteLine(users[0]);
                         }
+                    }
+
+                    else if (bindingPath == "Age")
+                    {
+                        var el = (TextBox)e.EditingElement;
+
+                        if (int.TryParse(el.Text, out _) && el.Text.Length != 0) return;
+
+                        ((DataGrid)sender).CancelEdit(DataGridEditingUnit.Cell);
+                    }
+
+                    else if (bindingPath == "Name")
+                    {
+                        var el = (TextBox)e.EditingElement;
+
+                        if (el.Text.Length != 0) return;
+
+                        ((DataGrid)sender).CancelEdit(DataGridEditingUnit.Cell);
                     }
                 }
             }
@@ -87,6 +104,20 @@ namespace WPFdatagrid
             sqlHandler.TruncateData();
             sqlHandler.InsertData(users);
             users = sqlHandler.ReadData();
+            myData.Items.Refresh();
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            users = sqlHandler.ReadData();
+            myData.ItemsSource = users;
+            myData.Items.Refresh();
+        }
+
+        private void Erase_Click(object sender, RoutedEventArgs e)
+        {
+            users.Clear();
+            myData.ItemsSource = users;
             myData.Items.Refresh();
         }
     }
